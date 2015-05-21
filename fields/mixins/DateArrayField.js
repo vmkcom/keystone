@@ -14,7 +14,7 @@ module.exports = {
 	// set default properties
 	getDefaultProps: function() {
 		return {
-			format: 'YYYY-MM-DD',
+			format: 'YYYY-MM-DD HH:mm',
 			pickers: []
 		};
 	},
@@ -49,6 +49,8 @@ module.exports = {
 			this.props.pickers[i] = new Pikaday({
 				field: dateInput,
 				format: this.props.format,
+				inputFormats: 'YYYY-MM-DDTHH:mm:SSZ',
+				use24hour: true,
 				onSelect: function(date) {//eslint-disable-line no-unused-vars
 					if (this.props.onChange && this.props.pickers[i].toString() !== val.value) {
 						this.props.value[i] = this.props.pickers[i].toString();
@@ -66,6 +68,8 @@ module.exports = {
 			this.props.pickers[i] = new Pikaday({
 				field: dateInput,
 				format: this.props.format,
+				inputFormats: 'YYYY-MM-DDTHH:mm:SSZ',
+				use24hour: true,				
 				onSelect: function(date) {//eslint-disable-line no-unused-vars
 					if (this.props.onChange && this.props.pickers[i].toString() !== val.value) {
 						this.props.value[i] = this.props.pickers[i].toString();
