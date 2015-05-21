@@ -596,7 +596,7 @@
             }
             while ((pEl = pEl.parentNode));
             if (self._v && target !== opts.trigger && pEl !== opts.trigger) {
-            	if (self._v) self._o.onSelect.call(self, moment(self.getDate()).utc().format('YYYY-MM-DD HH:mm'));
+            	if (self._v) self._o.onSelect.call(self, moment(self.getDate()).format(self.format));
                 self.hide();
             }
         };
