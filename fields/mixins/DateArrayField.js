@@ -53,8 +53,8 @@ module.exports = {
 				use24hour: true,
 				onSelect: function(date) {//eslint-disable-line no-unused-vars
 					if (this.props.onChange && this.props.pickers[i].toString() !== val.value) {
-						this.props.value[i] = this.props.pickers[i].toString();
-						this.props.onChange(this.props.pickers[i].toString());
+						this.props.value[i] = date
+						this.props.onChange(date);
 					}
 				}.bind(this)
 			});
@@ -72,8 +72,8 @@ module.exports = {
 				use24hour: true,				
 				onSelect: function(date) {//eslint-disable-line no-unused-vars
 					if (this.props.onChange && this.props.pickers[i].toString() !== val.value) {
-						this.props.value[i] = this.props.pickers[i].toString();
-						this.props.onChange(this.props.pickers[i].toString());
+						this.props.value[i] = date
+						this.props.onChange(date);
 					}
 				}.bind(this)
 			});

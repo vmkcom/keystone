@@ -479,14 +479,6 @@
                         newDate.setMinutes(self._d.getMinutes());
                     }
                     self.setDate(newDate);
-                    if (opts.bound) {
-                        sto(function() {
-                            self.hide();
-                            if (opts.field) {
-                                opts.field.blur();
-                            }
-                        }, 100);
-                    }
                     return;
                 }
                 else if (hasClass(target, 'pika-prev')) {
@@ -604,6 +596,7 @@
             }
             while ((pEl = pEl.parentNode));
             if (self._v && target !== opts.trigger && pEl !== opts.trigger) {
+            	if (self._v) self._o.onSelect.call(self, moment(self.getDate()).utc().format('YYYY-MM-DD HH:mm'));
                 self.hide();
             }
         };
@@ -787,7 +780,7 @@
             if (seconds) {
                 this._d.setSeconds(seconds);
             }
-            this.setDate(this._d);
+            this.setDate(this._d, true);
         },
 
         /**
@@ -834,9 +827,6 @@
             if (this._o.field) {
                 this._o.field.value = this.toString();
                 fireEvent(this._o.field, 'change', { firedBy: this });
-            }
-            if (!preventOnSelect && typeof this._o.onSelect === 'function') {
-                this._o.onSelect.call(this, this.getDate());
             }
         },
 
@@ -1140,6 +1130,8 @@
                 this.el.style.cssText = '';
                 addClass(this.el, 'is-hidden');
                 this._v = false;
+
+
                 if (v !== undefined && typeof this._o.onClose === 'function') {
                     this._o.onClose.call(this);
                 }
