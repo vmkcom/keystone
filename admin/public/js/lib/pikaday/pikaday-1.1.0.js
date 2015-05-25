@@ -429,7 +429,7 @@
                 }
             }) +
             '<td>:</td>' +
-            renderTimePicker(60, mm, 'pika-select-minute', function(i) { if (i < 10) return "0" + i; return i });
+            renderTimePicker(12, mm, 'pika-select-minute', function(i) {i = i * 5; if (i < 10) return "0" + i; return i });
 
         if (opts.showSeconds) {
             to_return += '<td>:</td>' +

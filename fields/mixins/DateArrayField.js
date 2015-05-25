@@ -14,7 +14,7 @@ module.exports = {
 	// set default properties
 	getDefaultProps: function() {
 		return {
-			format: 'YYYY-MM-DD HH:mm:SS Z',
+			format: 'YYYY-MM-DD HH:mm Z',
 			pickers: []
 		};
 	},
@@ -79,7 +79,7 @@ module.exports = {
 	},
 	
 	addItem: function() {
-		var newValues = this.state.values.concat(newItem(''));
+		var newValues = this.state.values.concat(newItem(moment().minutes(0).hours(20).format('YYYY-MM-DD HH:mm Z')));
 		this.setState({
 			values: newValues
 		});
@@ -105,7 +105,6 @@ module.exports = {
 	},
 	
 	valueChanged: function(values) {
-		console.log(values)
 		this.props.onChange({
 			path: this.props.path,
 			value: values
