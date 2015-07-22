@@ -55,6 +55,7 @@ $.fn.html5sortable = function(options) {
 				}
 			}
 		}).on('dragend.h5s', function() {
+			if (!dragging) return
 			dragging.removeClass('sortable-dragging').show();
 			placeholders.detach();
 			if (index != dragging.index()) {

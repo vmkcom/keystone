@@ -51,6 +51,27 @@ var Thumbnail = React.createClass({
 	
 });
 
+var bindSortable = function() {
+		var $node = $(this.getDOMNode())
+		var self = this
+		window.a = this
+
+		$node.find('.images-container').html5sortable().unbind('sortupdate')
+		$node.find('.images-container').html5sortable().bind('sortupdate', function() {
+			//Triggered when the user stopped sorting and the DOM position has changed.
+
+				var hrefs = []
+				$node.find('.image-field a').each(function(){hrefs.push($(this).attr('href'))})
+
+				var order = _.map(hrefs, function(h){return _.last(h.split('/')).split('.')[0]})
+
+				var newThumbnails = _.sortBy(self.state.thumbnails, function(t){return order.indexOf(t.props.public_id)}) 
+
+				self.setState({ thumbnails: []});				
+				self.setState({ thumbnails: newThumbnails });
+		});		
+	}
+
 module.exports = Field.create({
 
 	getInitialState: function() {
@@ -63,6 +84,9 @@ module.exports = Field.create({
 
 		return { thumbnails: thumbnails };
 	},
+
+	componentDidMount: bindSortable,
+	componentDidUpdate: bindSortable,
 
 	removeThumbnail: function (i) {
 		var thumbs = this.state.thumbnails;
@@ -100,6 +124,13 @@ module.exports = Field.create({
 
 	renderFileField: function() {
 		return <input ref='fileField' type='file' name={this.props.paths.upload} multiple className='field-upload' onChange={this.uploadFile} />;
+	},
+
+	renderOrderField: function() {
+		var value = '';
+		
+		value = _.map(this.state.thumbnails, function(t){return t.props.public_id}).join(',');
+		return <input ref='orderField' type='hidden' name={this.props.paths.order} className='field-order' value={value} />;
 	},
 
 	clearFiles: function() {
@@ -224,6 +255,7 @@ module.exports = Field.create({
 				{this.renderFieldAction()}
 				{this.renderUploadsField()}
 				{this.renderFileField()}
+				{this.renderOrderField()}
 
 				<div className='field-ui'>
 					{this.renderContainer()}
