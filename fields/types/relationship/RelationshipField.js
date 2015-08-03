@@ -61,13 +61,13 @@ module.exports = Field.create({
 				value: input
 			});
 			superagent
-				.get('/keystone/api/' + self.props.refList.path + '/get?dataset=simple&id=' + input)
+				.get('/keystone/api/' + self.props.refList.path + '/' + input + '?simple')
 				.set('Accept', 'application/json')
 				.end(function (err, res) {
 					if (err) throw err;
 					
 					var value = res.body;
-					_.findWhere(expandedValues, {value: value.id}).label = value.name;
+					_.findWhere(expandedValues, { value: value.id }).label = value.name;
 
 					callbackCount++;
 					if (callbackCount === inputs.length) {

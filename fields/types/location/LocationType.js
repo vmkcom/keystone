@@ -24,7 +24,7 @@ function location(list, path, options) {
 	this._underscoreMethods = ['format', 'googleLookup', 'kmFrom', 'milesFrom'];
 	this._fixedSize = 'full';
 
-	this.enableMapsAPI = keystone.get('google api key') ? true : false;
+	this.enableMapsAPI = (options.geocodeGoogle===true || (options.geocodeGoogle !== false && keystone.get('google server api key'))) ? true : false;
 
 	this._properties = ['enableMapsAPI'];
 
@@ -368,6 +368,10 @@ function doGoogleGeocodeRequest(address, region, callback) {
 		options.region = region;
 	}
 
+	if (keystone.get('google server api key')){
+		options.key = keystone.get('google server api key');
+	}
+
 	var endpoint = 'https://maps.googleapis.com/maps/api/geocode/json?' + querystring.stringify(options);
 
 	https.get(endpoint, function(res) {
@@ -382,7 +386,7 @@ function doGoogleGeocodeRequest(address, region, callback) {
 					result = JSON.parse(dataBuff);
 				}
 				catch (exp) {
-					result = {'status_code': 500, 'status_text': 'JSON Parse Failed', 'status': 'UNKNOWN_ERROR'};
+					result = { 'status_code': 500, 'status_text': 'JSON Parse Failed', 'status': 'UNKNOWN_ERROR' };
 				}
 				callback(null, result);
 			});
@@ -417,7 +421,7 @@ location.prototype.googleLookup = function(item, region, update, callback) {
 		address = item.get(this.paths.serialised);
 
 	if (address.length === 0) {
-		return callback({'status_code': 500, 'status_text': 'No address to geocode', 'status': 'NO_ADDRESS'});
+		return callback({ 'status_code': 500, 'status_text': 'No address to geocode', 'status': 'NO_ADDRESS' });
 	}
 
 	doGoogleGeocodeRequest(address, region || keystone.get('default region'), function(err, geocode){
