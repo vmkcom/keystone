@@ -22,6 +22,12 @@ var Item = React.createClass({
 		var body = [];
 
 		body.push(<img className='file-icon' src={'/keystone/images/icons/32/' + iconName + '.png'} />);
+		
+		if (this.props.url) {
+			var url = this.props.url
+			body.push(<a href={url} target='_blank'> <img className='file-thumb' src={url} /> </a>);
+		}
+		
 		body.push(<span className='file-filename'>{filename}</span>);
 
 		if (this.props.size) {
@@ -103,6 +109,11 @@ module.exports = Field.create({
 
 		var files = event.target.files;
 		_.each(files, function (f) {
+			_.each(self.state.items, function(item){
+				console.log(item, item.key)
+				if (item.props.isQueued) self.removeItem(item.key)
+			})
+
 			self.pushItem({ isQueued: true, filename: f.name });
 			self.forceUpdate();
 		});
