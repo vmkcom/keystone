@@ -108,11 +108,13 @@ module.exports = Field.create({
 		var self = this;
 
 		var files = event.target.files;
+		_.each(self.state.items, function(item){
+			if (!item || !item.key) return 
+			console.log(item, item.props.isQueued)
+			if (item.props.isQueued) self.removeItem(item.key)
+		})
+		
 		_.each(files, function (f) {
-			_.each(self.state.items, function(item){
-				if (!item || !item.key) return 
-				if (item.props.isQueued) self.removeItem(item.key)
-			})
 
 			self.pushItem({ isQueued: true, filename: f.name });
 			self.forceUpdate();
