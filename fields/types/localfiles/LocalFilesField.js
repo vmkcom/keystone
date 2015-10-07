@@ -110,7 +110,7 @@ module.exports = Field.create({
 		var files = event.target.files;
 		_.each(files, function (f) {
 			_.each(self.state.items, function(item){
-				console.log(item, item.key)
+				if (!item || !item.key) return 
 				if (item.props.isQueued) self.removeItem(item.key)
 			})
 
