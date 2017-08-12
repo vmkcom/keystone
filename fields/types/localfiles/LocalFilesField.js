@@ -20,15 +20,15 @@ var Item = React.createClass({
 		if (_.contains(ICON_EXTS, ext)) iconName = ext;
 
 		var body = [];
+		var noFilename = false
 
 		body.push(<img className='file-icon' src={'/keystone/images/icons/32/' + iconName + '.png'} />);
-		
-		if (this.props.url) {
-			var url = this.props.url
-			body.push(<a href={url} target='_blank'> <img className='file-thumb' src={url} /> </a>);
-		}
-		
-		body.push(<span className='file-filename'>{filename}</span>);
+		if (this.props.filetype.indexOf('image') == 0) {
+			var url = '\/files/' + this.props.filename
+			body.push(<a href={url} target='_blank'> <img className='file-thumb' style={{height: '90px', width: 'auto'}} src={url} /> </a>);
+			noFilename = true
+		}	
+		if (!noFilename) body.push(<span className='file-filename'>{filename}</span>);
 
 		if (this.props.size) {
 			body.push(<span className='file-size'>{bytes(this.props.size)}</span>);
