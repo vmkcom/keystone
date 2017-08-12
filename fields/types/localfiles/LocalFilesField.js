@@ -23,7 +23,7 @@ var Item = React.createClass({
 		var noFilename = false
 
 		body.push(<img className='file-icon' src={'/keystone/images/icons/32/' + iconName + '.png'} />);
-		if (this.props.filetype.indexOf('image') == 0) {
+		if (this.props.filetype && this.props.filetype.indexOf('image') == 0) {
 			var url = '\/files/' + this.props.filename
 			body.push(<a href={url} target='_blank'> <img className='file-thumb' style={{height: '90px', width: 'auto'}} src={url} /> </a>);
 			noFilename = true
