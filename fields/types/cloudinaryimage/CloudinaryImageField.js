@@ -276,12 +276,14 @@ module.exports = Field.create({
 	},
 
 	renderImageSelect: function() {
+		var selectPrefix = this.props.selectPrefix;
 		var getOptions = function(input, callback) {
 			$.get('/keystone/api/cloudinary/autocomplete', {
 				dataType: 'json',
 				data: {
 					q: input
-				}
+				},
+				prefix: selectPrefix
 			}, function (data) {
 				var options = [];
 
@@ -307,6 +309,7 @@ module.exports = Field.create({
 					name={this.props.paths.select}
 					id={'field_' + this.props.paths.select}
 					asyncOptions={getOptions}
+					cacheAsyncResults={false}
 				/>
 			</div>
 		);
