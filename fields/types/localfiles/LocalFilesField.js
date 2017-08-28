@@ -53,6 +53,26 @@ var Item = React.createClass({
 	
 });
 
+var bindSortable = function() {
+		var $node = $(this.getDOMNode())
+		var self = this
+
+		$node.find('.files-container').html5sortable().unbind('sortupdate')
+		$node.find('.files-container').html5sortable().bind('sortupdate', function() {
+			//Triggered when the user stopped sorting and the DOM position has changed.
+
+			var hrefs = []
+			$node.find('.file-item a').each(function(){ hrefs.push($(this).attr('href')) })
+
+			var order = _.map(hrefs, function(h){return _.last(h.split('/'))})
+			var newItems = _.sortBy(self.state.items, function(t){return order.indexOf(t.props.filename)}) 
+			self.setState({ items: []});				
+			self.setState({ items: newItems });
+		});		
+	}
+
+
+
 module.exports = Field.create({
 
 	getInitialState: function () {
@@ -78,6 +98,10 @@ module.exports = Field.create({
 
 		this.setState({ items: thumbs });
 	},
+
+	componentDidMount: bindSortable,
+	componentDidUpdate: bindSortable,
+
 
 	pushItem: function (args, thumbs) {
 		thumbs = thumbs || this.state.items;
@@ -110,7 +134,6 @@ module.exports = Field.create({
 		var files = event.target.files;
 		_.each(self.state.items, function(item){
 			if (!item || !item.key) return 
-			console.log(item, item.props.isQueued)
 			if (item.props.isQueued) self.removeItem(item.key)
 		})
 		
@@ -142,6 +165,15 @@ module.exports = Field.create({
 					{clearFilesButton}
 				</div>
 			</div>
+		);
+	},
+
+	renderOrderField: function() {
+		var value = '';
+		
+		value = _.map(this.state.items, function(t){return t.props._id}).join(',');
+		return (
+			<input ref='orderField' type='hidden' name={this.props.paths.order} className='field-order' value={value} />
 		);
 	},
 
@@ -193,6 +225,7 @@ module.exports = Field.create({
 				{this.renderFieldAction()}
 				{this.renderUploadsField()}
 				{this.renderFileField()}
+				{this.renderOrderField()}
 
 				<div className="field-ui">
 					{this.renderContainer()}
