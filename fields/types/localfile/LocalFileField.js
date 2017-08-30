@@ -102,7 +102,7 @@ module.exports = Field.create({
 
 		if (this.hasFile() && !this.state.removeExisting) {
 			var thumb
-			if (this.props.value.filetype.indexOf('image') == 0) {
+			if (this.props.value.filetype && this.props.value.filetype.indexOf('image') == 0) {
 				var url = '/files/' + this.getFilename()
 				thumb = (
 					<a href={url} target='_blank'> <img className='file-thumb' style={{height: '90px', width: 'auto'}} src={url} /> </a>
