@@ -127,6 +127,7 @@ module.exports = Field.create({
 		return 'context=relationship&q=' + value +
 				'&list=' + Keystone.list.path +
 				'&field=' + this.props.path +
+				'&limit=1000' +
 				(filters ? '&' + filters : '');
 	},
 
